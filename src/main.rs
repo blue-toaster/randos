@@ -32,6 +32,10 @@ pub extern "C" fn _start() -> ! {
     println!("Hello world!");
     println!("Numbers: {} & {}", 09, 388);
 
+    randos::init();
+
+    x86_64::instructions::interrupts::int3();
+
     #[cfg(test)]
     test_main();
 
