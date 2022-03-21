@@ -23,6 +23,7 @@ fn panic(info: &PanicInfo) -> ! {
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
+    randos::hlt_loop();
 
     loop {}
 }
@@ -34,12 +35,6 @@ pub extern "C" fn _start() -> ! {
 
     randos::init();
 
-    fn stack_overflow() {
-        stack_overflow();
-    }
-
-    stack_overflow();
-
     #[cfg(test)]
     test_main();
 
@@ -47,5 +42,5 @@ pub extern "C" fn _start() -> ! {
 
     exit_qemu(QemuExitCode::Success);
 
-    loop {}
+    randos::hlt_loop();
 }
