@@ -30,7 +30,7 @@ fn panic(info: &PanicInfo) -> ! {
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello world!");
-    println!("Numbers: {} & {}", 09, 388);
+    println!("Numbers: {} & {} + {}", 09, 388, 39 / 15);
 
     randos::init();
 
