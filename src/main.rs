@@ -1,16 +1,25 @@
 #![no_std]
 #![no_main]
+#![reexport_test_harness_main = "test_main"]
+#![feature(custom_test_frameworks)]
+#![test_runner(randos::test_runner)]
 
-use core::fmt::Write;
 use core::panic::PanicInfo;
+use randos::*;
 
-mod qemu;
+mod serial;
 mod vga_buffer;
 
-use qemu::{exit_qemu, QemuExitCode};
+#[cfg(test)]
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    serial_println!("[failed]\n");
+    serial_println!("Error: {}\n", info);
+    exit_qemu(QemuExitCode::Failed);
+    loop {}
+}
 
-static PRINT: &[u8] = b"Hello world!";
-
+#[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
@@ -21,8 +30,14 @@ fn panic(info: &PanicInfo) -> ! {
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello world!");
+    println!("Numbers: {} & {}", 09, 388);
 
-    unsafe { exit_qemu(QemuExitCode::Success) }
+    #[cfg(test)]
+    test_main();
+
+    println!("Didn't crash!");
+
+    exit_qemu(QemuExitCode::Success);
 
     loop {}
 }
