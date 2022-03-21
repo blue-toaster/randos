@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
 
+use core::fmt::Write;
 use core::panic::PanicInfo;
 
 mod vga_buffer;
@@ -8,20 +9,15 @@ mod vga_buffer;
 static PRINT: &[u8] = b"Hello world!";
 
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
+    println!("{}", info);
+
     loop {}
 }
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    let buff = 0xb8000 as *mut u8;
-
-    for (i, &byte) in PRINT.iter().enumerate() {
-        unsafe {
-            *buff.offset(i as isize * 2) = byte;
-            *buff.offset(i as isize * 2 + 1) = 0xb;
-        }
-    }
+    println!("Hello world!");
 
     unsafe { exit_qemu() }
 
