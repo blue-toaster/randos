@@ -4,7 +4,10 @@
 use core::fmt::Write;
 use core::panic::PanicInfo;
 
+mod qemu;
 mod vga_buffer;
+
+use qemu::{exit_qemu, QemuExitCode};
 
 static PRINT: &[u8] = b"Hello world!";
 
@@ -19,15 +22,7 @@ fn panic(info: &PanicInfo) -> ! {
 pub extern "C" fn _start() -> ! {
     println!("Hello world!");
 
-    unsafe { exit_qemu() }
+    unsafe { exit_qemu(QemuExitCode::Success) }
 
     loop {}
-}
-
-unsafe fn exit_qemu() {
-    use x86_64::instructions::port::Port;
-
-    let mut port = Port::<u32>::new(0xf4);
-
-    port.write(51);
 }
