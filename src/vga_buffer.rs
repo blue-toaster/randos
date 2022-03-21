@@ -125,6 +125,8 @@ impl fmt::Write for Writer {
     }
 }
 
+// Macros...
+
 #[macro_export]
 macro_rules! print {
     ($($arg:tt)*) => ($crate::vga_buffer::_print(format_args!($($arg)*)));
@@ -157,7 +159,6 @@ fn test_println_many() {
 #[test_case]
 fn test_println_output() {
     let s = "Some test string that fits on a single line, this don't work for some reason";
-    println!("{}", s);
     for (i, c) in s.chars().enumerate() {
         let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
         assert_eq!(char::from(screen_char.ascii_character), c);
