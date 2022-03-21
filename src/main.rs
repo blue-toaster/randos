@@ -23,9 +23,8 @@ fn panic(info: &PanicInfo) -> ! {
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    randos::hlt_loop();
 
-    loop {}
+    randos::hlt_loop();
 }
 
 #[no_mangle]
