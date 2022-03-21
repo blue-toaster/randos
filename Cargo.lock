@@ -39,7 +39,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "ros"
+name = "randos"
 version = "0.1.0"
 dependencies = [
  "bootloader",
